@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix 水墨八音盒运动编程器",
+  "description": "基于机械八音盒凸点矩阵与东方水墨美学的写意动态编排系统",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

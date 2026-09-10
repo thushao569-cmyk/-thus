@@ -1,0 +1,303 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-paper: #F5F5F0;
+    --ink-black: #1A1A1A;
+    --ink-dark: #333333;
+    --ink-gray: #666666;
+    --ink-light: #B5B5AC;
+    --cinnabar: #C83C23;
+    --cinnabar-glow: rgba(200, 60, 35, 0.25);
+  }
+
+  body {
+    background-color: var(--bg-paper);
+    color: var(--ink-dark);
+    font-family: 'Noto Serif SC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Songti SC", serif;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* 16-column matrix grid */
+.grid-cols-16 {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+}
+
+/* Paper noise texture overlay */
+.paper-texture {
+  background-color: #F5F5F0;
+  background-image: radial-gradient(#d3d1c7 0.75px, transparent 0.75px), radial-gradient(#e1ded3 0.75px, #F5F5F0 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Authentic Chinese seal (印章) style */
+.seal-badge {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive, serif;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  letter-spacing: 0.15em;
+  border: 1.5px solid #C83C23;
+  color: #C83C23;
+  box-shadow: inset 0 0 4px rgba(200, 60, 35, 0.2);
+  background: rgba(200, 60, 35, 0.04);
+}
+
+/* =========================================================================
+   SVG INK FIGURE & JOINT STYLING (PROMPT 2 REQUIREMENTS)
+   ========================================================================= */
+
+/* Idle breathing motion */
+@keyframes ink-breathe {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.008);
+  }
+}
+
+.figure-breathe-container {
+  animation: ink-breathe 4.5s ease-in-out infinite;
+}
+
+/* Three separate joint groups with IDs and specific transform origins */
+#left-arm {
+  transform-origin: 230px 240px;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+  will-change: transform, filter;
+}
+
+#body {
+  transform-origin: 300px 480px;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+  will-change: transform, filter;
+}
+
+#right-arm {
+  transform-origin: 370px 240px;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), filter 0.5s ease;
+  will-change: transform, filter;
+}
+
+/* Active states for the 3 groups */
+#left-arm.active-left {
+  transform: rotate(-45deg) translateY(-8px);
+  filter: drop-shadow(-6px -6px 14px rgba(20, 20, 20, 0.55));
+}
+
+#body.active-body {
+  transform: translateY(-20px) scaleY(1.02);
+  filter: drop-shadow(0 10px 18px rgba(20, 20, 20, 0.35));
+}
+
+#right-arm.active-right {
+  transform: rotate(45deg) translateY(-8px);
+  filter: drop-shadow(6px -6px 14px rgba(20, 20, 20, 0.55));
+}
+
+/* =========================================================================
+   INK DROP & RIPPLE ANIMATIONS (PROMPT 3 REQUIREMENTS)
+   ========================================================================= */
+
+/* Ink drop pop-in animation */
+@keyframes ink-pop {
+  0% {
+    transform: scale(0.1);
+    opacity: 0.2;
+  }
+  65% {
+    transform: scale(1.18);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-ink-pop {
+  animation: ink-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Rice paper ink diffusion ripple (墨水在宣纸上晕开的感觉) */
+@keyframes ink-ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+.ink-ripple-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  margin-left: -12px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(26, 26, 26, 0.6) 0%, rgba(50, 50, 50, 0.3) 50%, transparent 75%);
+  pointer-events: none;
+  animation: ink-ripple 0.8s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/* Mechanical tine strike flash (凸点顶起推杆机械反馈) */
+@keyframes tine-strike {
+  0% {
+    transform: scale(1.28);
+    box-shadow: 0 0 16px rgba(200, 60, 35, 0.8), 0 0 4px #C83C23;
+    border-color: #C83C23;
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 10px rgba(200, 60, 35, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+.animate-tine-strike {
+  animation: tine-strike 0.32s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+
+/* Music box winding key rotation (八音盒发条旋转) */
+@keyframes winding-key-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.winding-key-active {
+  animation: winding-key-spin 4s linear infinite;
+}
+
+/* Custom scrollbar for delicate oriental feel */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(230, 228, 220, 0.5);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 100, 95, 0.35);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 60, 35, 0.5);
+}
+
+/* =========================================================================
+   RHYTHM BREATHING & PAPER WAVE ANIMATIONS (节奏呼吸与纸张微波起伏)
+   ========================================================================= */
+
+/* Paper undulation wave - simulates delicate Xuan paper breathing and flexing with rhythm */
+@keyframes paper-wave-undulation {
+  0% {
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0px);
+    box-shadow: 0 2px 6px rgba(40, 35, 30, 0.05), inset 0 0 12px rgba(200, 60, 35, 0.02);
+  }
+  25% {
+    transform: perspective(600px) rotateX(1.5deg) rotateY(-1deg) translateY(-2.5px);
+    box-shadow: 0 6px 14px rgba(40, 35, 30, 0.08), inset 0 1px 16px rgba(200, 60, 35, 0.04);
+  }
+  50% {
+    transform: perspective(600px) rotateX(-1deg) rotateY(1.2deg) translateY(1.5px);
+    box-shadow: 0 3px 8px rgba(40, 35, 30, 0.04), inset 0 -1px 14px rgba(20, 20, 20, 0.03);
+  }
+  75% {
+    transform: perspective(600px) rotateX(1deg) rotateY(0.6deg) translateY(-1.5px);
+    box-shadow: 0 6px 14px rgba(40, 35, 30, 0.07), inset 0 1px 12px rgba(200, 60, 35, 0.03);
+  }
+  100% {
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg) translateY(0px);
+    box-shadow: 0 2px 6px rgba(40, 35, 30, 0.05), inset 0 0 12px rgba(200, 60, 35, 0.02);
+  }
+}
+
+.rhythm-paper-wave {
+  animation: paper-wave-undulation var(--bar-duration, 3s) ease-in-out infinite;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+}
+
+/* Macro paper surface breathing wave applied across stage and background */
+@keyframes stage-paper-rhythm-wave {
+  0%, 100% {
+    transform: scale(1) translateY(0px);
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.02));
+  }
+  30% {
+    transform: scale(1.003) translateY(-3px);
+    filter: drop-shadow(0 6px 16px rgba(200, 60, 35, 0.035));
+  }
+  65% {
+    transform: scale(0.998) translateY(2px);
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.015));
+  }
+}
+
+.paper-wave-active .stage-paper-wave {
+  animation: stage-paper-rhythm-wave var(--bar-duration, 3s) ease-in-out infinite;
+}
+
+/* Micro SVG rhythm circle jump and pulse synchronized with beat */
+@keyframes rhythm-svg-pulse {
+  0% {
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+  25% {
+    transform: scale(1.24);
+    filter: drop-shadow(0 0 4px rgba(200, 60, 35, 0.65));
+  }
+  50% {
+    transform: scale(1.04);
+  }
+  100% {
+    transform: scale(0.92);
+    filter: drop-shadow(0 0 0px transparent);
+  }
+}
+
+.rhythm-svg-beat {
+  animation: rhythm-svg-pulse var(--beat-duration, 0.75s) ease-in-out infinite;
+}
+
+@keyframes rhythm-ring-spin-pulse {
+  0% {
+    transform: rotate(0deg) scale(0.96);
+    opacity: 0.35;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.08);
+    opacity: 0.75;
+  }
+  100% {
+    transform: rotate(360deg) scale(0.96);
+    opacity: 0.35;
+  }
+}
+
+.rhythm-svg-ring {
+  transform-origin: 16px 16px;
+  animation: rhythm-ring-spin-pulse var(--bar-duration, 3s) linear infinite;
+}
+
